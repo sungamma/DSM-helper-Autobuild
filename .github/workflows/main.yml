@@ -11,24 +11,27 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
     - name: Setup JDK
-      uses: actions/setup-java@v1
+      uses: actions/setup-java@v3
       with:
-        java-version: 1.8
+        distribution: temurin
+        java-version: 11
 
 
     - name: Clone project
         # 拉取项目源码到虚拟环境
-      run: git clone --depth 1 $REPO_URL -b $REPO_BRANCH project
-    - name: Build the app
-      # 构建调试版 APK
-      working-directory: ./project/android
-      run: |
-        if [ ! -f "gradlew" ]; then gradle wrapper; fi
-        chmod +x gradlew
-        ./gradlew assembleDebug --stacktrace
+      run: git clone --depth 1 $REPO_URL -b $REPO_BRANCH .
+
+
+
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v2
+        
+    - name: Execute Gradle build
+      working-directory: ./android
+      run: ./gradlew.bat
 
     - name: Upload APK
         # 打包上传生成的 APK 到的网页端
