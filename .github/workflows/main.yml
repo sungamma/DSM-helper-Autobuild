@@ -24,7 +24,7 @@ jobs:
       run: git clone --depth 1 $REPO_URL -b $REPO_BRANCH project
     - name: Build the app
       # 构建调试版 APK
-      working-directory: ./project
+      working-directory: ./project/android
       run: |
         if [ ! -f "gradlew" ]; then gradle wrapper; fi
         chmod +x gradlew
